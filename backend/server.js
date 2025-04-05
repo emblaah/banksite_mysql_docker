@@ -5,15 +5,20 @@ import mysql from "mysql2/promise";
 const app = express();
 const PORT = 3004;
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://ec2-13-60-186-122.eu-north-1.compute.amazonaws.com:3000", // Allow frontend to make requests
+    methods: ["GET", "POST"],
+  })
+);
 app.use(express.json());
 
 const pool = mysql.createPool({
-  user: "root",
-  password: "root",
-  host: "localhost",
-  database: "bank",
-  port: 8889,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 });
 
 // Help function to make code look cleaner

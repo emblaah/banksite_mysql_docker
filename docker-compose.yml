@@ -7,14 +7,16 @@ services:
     build: ./backend
     ports:
       - "3004:3004"
+    env_file:
+      - .env
   mysql:
     image: mysql:5.7 # Välj en MySQL-version
     platform: linux/amd64
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: bank
+      MYSQL_DATABASE: banksite_db
     ports:
-      - "8890:8889" # Porten som MySQL-servern lyssnar på
+      - "8890:8889" # Porten som MySQL-servern lyssnar på (MAMP)
     volumes:
       - mysql-data:/var/lib/mysql-docker
 

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
+import BASEURL from "@/util/baseUrl";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -20,7 +21,6 @@ export default function Home() {
   const loginFormRef = useRef(null);
 
   const localhostUrl = "localhost";
-  const BASEURL = "ec2-13-60-186-122.eu-north-1.compute.amazonaws.com";
   const backendURL = "backend";
 
   useEffect(() => {
