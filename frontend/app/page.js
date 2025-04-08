@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
-import BASEURL from "@/util/baseUrl";
+import BASEURL from "@/utils/baseUrl";
 
 export default function Home() {
   const [loggedIn, setLoggedIn] = useState(false);

@@ -1,29 +1,38 @@
 import express from "express";
 import cors from "cors";
 import mysql from "mysql2/promise";
+import dotenv from "dotenv";
 
+dotenv.config();
 const app = express();
 const PORT = 3004;
 // Middleware
-app.use(
-  cors({
-    origin: "http://ec2-13-60-186-122.eu-north-1.compute.amazonaws.com:3000", // Allow frontend to make requests
-    methods: ["GET", "POST"],
-  })
-);
+app.use(cors());
 app.use(express.json());
 
-const pool = mysql.createPool({
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
+let connection
+async function startServer() {
+  connection = await mysql.createConnection({
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    port: process.env.DB_PORT,
+  });
+}
+
+startServer();
+
+console.log("Connected to database: ", {
+  host: process.env.HOST,
   port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  database: process.env.DB_NAME,
 });
 
 // Help function to make code look cleaner
 async function query(sql, params) {
-  const [results] = await pool.execute(sql, params);
+  const [results] = await connection.execute(sql, params);
   return results;
 }
 
@@ -34,9 +43,7 @@ function generateOTP() {
   return otp.toString();
 }
 
-// Din kod här. Skriv dina arrayer
-// const users = [];
-// const accounts = [];
+// Skapa en session array för att lagra användarsessioner
 const sessions = [];
 
 // Skapa användare
